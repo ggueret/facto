@@ -1,0 +1,7 @@
+/target
+
+# local git worktrees
+.worktrees/
+
+# Python wheel build output (maturin)
+dist/

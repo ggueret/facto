@@ -1,0 +1,20 @@
+# Minimal Cargo.lock fixture for facto-mcp integration tests.
+# Hand-crafted: two crates.io-sourced deps and one workspace local
+# (no source) to exercise the "skip path deps" branch of the parser.
+version = 3
+
+[[package]]
+name = "serde"
+version = "1.0.215"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "deadbeef00000000000000000000000000000000000000000000000000000000"
+
+[[package]]
+name = "tokio"
+version = "1.42.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "deadbeef00000000000000000000000000000000000000000000000000000001"
+
+[[package]]
+name = "my-local-crate"
+version = "0.1.0"

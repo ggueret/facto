@@ -1,0 +1,30 @@
+[package]
+name = "facto-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+description = "Core models, registry/forge/runtime clients for facto: real-time package ecosystem data for AI agents"
+documentation = "https://docs.rs/facto-core"
+readme = "../README.md"
+keywords = ["mcp", "ai-agents", "package-registry", "supply-chain", "grounding"]
+categories = ["api-bindings", "development-tools", "web-programming::http-client"]
+
+[dependencies]
+chrono = { workspace = true }
+dashmap = { workspace = true }
+futures = "0.3"
+reqwest = { workspace = true }
+schemars = { workspace = true }
+semver = "1"
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_yaml_ng = "0.10"
+thiserror = { workspace = true }
+tokio = { workspace = true }
+toml = "1"
+tracing = { workspace = true }
+urlencoding = { workspace = true }

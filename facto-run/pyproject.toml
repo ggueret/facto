@@ -1,0 +1,41 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "facto.run"
+dynamic = ["version"]
+description = "Real-time package ecosystem data for AI coding agents -- ships the `facto` CLI"
+authors = [
+    {name = "Geoffrey Guéret", email = "geoffrey@gueret.dev"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = ["mcp", "cli", "claude", "ai-agents", "supply-chain"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Environment :: Console",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Rust",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: System :: Software Distribution",
+]
+
+[project.urls]
+Homepage = "https://facto.run"
+Repository = "https://github.com/ggueret/facto"
+Issues = "https://github.com/ggueret/facto/issues"
+
+[tool.maturin]
+# Binary wheel: ships the `facto` binary AND a tiny `facto-run` wrapper
+# binary that execs `facto`. The wrapper lets `uvx facto.run mcp` work
+# without `--from` (uvx looks for a script matching the normalized
+# package name `facto-run`). See facto-run/src/alias.rs.
+bindings = "bin"
+manifest-path = "Cargo.toml"
+strip = true
