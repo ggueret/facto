@@ -166,55 +166,63 @@ jobs:
     name: Publish to PyPI
     needs: [create-release, build-wheels, build-sdist]
     runs-on: ubuntu-latest
-    # Gated behind a protected environment. Same pattern as publish-crates:
-    # any tag flows through build-wheels + build-sdist as a free dry-run;
-    # upload to PyPI requires manual approval in the Actions UI.
+    # Gated behind a protected environment: any tag flows through
+    # build-wheels + build-sdist as a free dry-run; upload requires manual
+    # approval in the Actions UI. Auth via OIDC trusted publishing, so no
+    # token is stored; the job mints a short-lived credential from PyPI.
     environment:
       name: pypi
       url: https://pypi.org/project/facto.run/
+    permissions:
+      id-token: write
+      contents: read
     steps:
-      - name: Download wheels
+      - name: Download distributions
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           path: dist
           merge-multiple: true
-      - name: Upload to PyPI
-        uses: PyO3/maturin-action@e83996d129638aa358a18fbd1dfb82f0b0fb5d3b # v1
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
         with:
-          command: upload
-          args: --non-interactive --skip-existing dist/*
-        env:
-          MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+          packages-dir: dist
+          skip-existing: true
 
   publish-crates:
     name: Publish to crates.io
     needs: [create-release, upload-binaries]
     runs-on: ubuntu-latest
-    # Gated behind a protected environment. Approval required from a
-    # configured reviewer before the workflow publishes any crate.
-    # Lets any tag (including v*-rc*, v*-test*) flow through create-release
-    # and upload-binaries as a dry-run, while publishing stays manual-opt-in.
+    # Gated behind a protected environment. Auth via OIDC trusted publishing:
+    # crates-io-auth-action mints a short-lived token (no stored secret),
+    # auto-revoked when the job ends. The trusted publisher must be configured
+    # on each crate first; a crate's very first version is published manually.
     environment:
       name: crates-io
       url: https://crates.io/crates/facto-run
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+      - name: Authenticate to crates.io
+        uses: rust-lang/crates-io-auth-action@bbd81622f20ce9e2dd9622e3218b975523e45bbe # v1.0.4
+        id: auth
       - name: Publish facto-core
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: cargo publish -p facto-core --locked
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
       - name: Wait for crates.io index propagation
         run: sleep 60
       - name: Publish facto-mcp
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: cargo publish -p facto-mcp --locked
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
       - name: Wait for crates.io index propagation
         run: sleep 60
       - name: Publish facto-run
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: cargo publish -p facto-run --locked
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
