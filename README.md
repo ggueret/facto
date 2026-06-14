@@ -41,7 +41,7 @@ Wire `facto mcp` into Claude Code using the **ephemeral uvx invocation**:
 no install, auto-cached, always fetches the published version:
 
 ```bash
-claude mcp add facto -- uvx facto.run mcp
+claude mcp add facto -- uvx --from facto.run facto mcp
 ```
 
 That's it. The agent can now call `get_latest_version`, `search_repositories`,
@@ -73,7 +73,7 @@ auto-caches by version:
 
 ```bash
 # Ephemeral: what Claude Code / Cursor / Copilot wiring typically uses
-uvx facto.run mcp
+uvx --from facto.run facto mcp
 ```
 
 For a persistent install that puts `facto` on your `PATH`:
@@ -86,7 +86,7 @@ facto mcp
 Pin a specific version (either form):
 
 ```bash
-uvx 'facto.run==0.1.0' mcp
+uvx --from 'facto.run==0.1.0' facto mcp
 uv tool install 'facto.run==0.1.0'
 ```
 
@@ -287,7 +287,7 @@ Agent: "Add Supabase auth to my Next.js app."
 Install both for full coverage:
 
 ```bash
-claude mcp add facto -- uvx facto.run mcp
+claude mcp add facto -- uvx --from facto.run facto mcp
 npx ctx7 setup
 ```
 

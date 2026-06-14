@@ -12,7 +12,7 @@ libraries, or metadata past its training cutoff.
 
 ```bash
 # Ephemeral (recommended for MCP wiring, zero-install)
-uvx facto.run mcp
+uvx --from facto.run facto mcp
 
 # Persistent: puts `facto` on your PATH
 uv tool install facto.run
@@ -22,13 +22,13 @@ facto mcp
 Pin a specific version:
 
 ```bash
-uvx 'facto.run==0.1.0' mcp
+uvx --from 'facto.run==0.1.0' facto mcp
 ```
 
 ## Wire into Claude Code
 
 ```bash
-claude mcp add facto -- uvx facto.run mcp
+claude mcp add facto -- uvx --from facto.run facto mcp
 ```
 
 ## Documentation
