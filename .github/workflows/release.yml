@@ -109,8 +109,10 @@ jobs:
           - target: x86_64-unknown-linux-musl
             os: ubuntu-latest
             manylinux: musllinux_1_2
+          # Native ARM runner: aws-lc-sys (rustls crypto) fails to
+          # cross-compile in the x86 manylinux container.
           - target: aarch64-unknown-linux-gnu
-            os: ubuntu-latest
+            os: ubuntu-24.04-arm
             manylinux: auto
           - target: aarch64-unknown-linux-musl
             os: ubuntu-latest
