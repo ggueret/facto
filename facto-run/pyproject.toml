@@ -5,7 +5,7 @@ build-backend = "maturin"
 [project]
 name = "facto.run"
 dynamic = ["version"]
-description = "Real-time package ecosystem data for AI coding agents -- ships the `facto` CLI"
+description = "Real-time package ecosystem data for AI coding agents (ships the `facto` CLI)"
 authors = [
     {name = "Geoffrey Guéret", email = "geoffrey@gueret.dev"}
 ]
