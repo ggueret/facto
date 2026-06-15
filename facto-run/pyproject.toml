@@ -32,10 +32,9 @@ Repository = "https://github.com/ggueret/facto"
 Issues = "https://github.com/ggueret/facto/issues"
 
 [tool.maturin]
-# Binary wheel: ships the `facto` binary AND a tiny `facto-run` wrapper
-# binary that execs `facto`. The wrapper lets `uvx facto.run mcp` work
-# without `--from` (uvx looks for a script matching the normalized
-# package name `facto-run`). See facto-run/src/alias.rs.
+# Binary wheel: ships the `facto` executable built from the Rust crate.
+# The PyPI dist is `facto.run` but the executable is `facto`, so the
+# zero-install invocation is `uvx --from facto.run facto`.
 bindings = "bin"
 manifest-path = "Cargo.toml"
 strip = true

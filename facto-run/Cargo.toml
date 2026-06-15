@@ -17,12 +17,6 @@ categories = ["command-line-utilities", "development-tools"]
 name = "facto"
 path = "src/main.rs"
 
-[[bin]]
-# Tiny wrapper so `uvx facto.run mcp` resolves without `--from`.
-# See src/alias.rs for rationale.
-name = "facto-run"
-path = "src/alias.rs"
-
 [dependencies]
 anyhow = "1"
 clap = { version = "4", features = ["derive"] }
